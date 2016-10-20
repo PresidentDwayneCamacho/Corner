@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile</title>
+    </head>
+    <body>
+
+        <% include menu.ejs %>
+        
+        <div>
+            <h1>Profile Page</h1>
+            <a href="/logout">Logout</a>
+        </div>
+        <div>
+            <h3>Local</h3>
+            <% if (profile.email) { %>
+                <p>
+                    <strong>id</strong>: <%= profile._id %><br>
+                    <strong>email</strong>: <%= profile.email %><br>
+                    <strong>password</strong>: <%= profile.password %>
+                </p>                    
+            <% } %>
+        </div>
+
+    </body>
+</html>

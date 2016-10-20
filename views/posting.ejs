@@ -1,0 +1,40 @@
+<!-- posting.ejs -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Posting</title>
+    </head>
+    <body>
+
+        <% include menu.ejs %>
+
+        <h1>Posts</h1>
+        <form action="/posting" method="post">
+            <input name="header" type="text" class="form-control" placeholder="Heading" required autofocus>
+            <input list="categories" name="category" type="text" class="form-control" placeholder="Category" required>
+            <datalist id="categories">
+                <option value="Textbook"></option>
+                <option value="Furniture"></option>
+                <option value="Talent"></option>
+                <option value="Other"></option>
+            </datalist>
+            <input name="subcategories" type="text" class="form-control" placeholder="Type">
+            <textarea name="textbody" rows="5" cols="20" placeholder="Please describe"></textarea>
+            <input type="submit" value="Post">
+        </form>
+        <a href="login">logout</a>
+        <h2>Entries</h2>
+        <% postings.forEach(function(post){ %>
+            <div>
+                <h3><%= post.header %></h3>
+                <p><%= post.category %></p>
+                <% post.subcategories.forEach(function(subcategory){ %>
+                    <p><% subcategory %></p>
+                <% }); %>
+                <p><%= post.textbody %></p>
+                <p><%= post.createdAt.toLocaleDateString() + ' ' + post.createdAt.toLocaleTimeString() %></p>
+            </div>
+        <% }); %>
+    </body>
+</html>
