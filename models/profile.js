@@ -7,8 +7,9 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
 var profileSchema = mongoose.Schema({
-    //name: {type: String, required: true},
-    email: {type: String, required: true, unique: true },
+    first: {type: String, required: true},
+    last: {type: String, required: true},
+    email: {type: String, required: true, unique: true},
     password: {type: String, required: true}
 });
 
@@ -21,4 +22,3 @@ profileSchema.methods.validPassword = function(password){
 }
 
 module.exports = mongoose.model('Profile',profileSchema);
-

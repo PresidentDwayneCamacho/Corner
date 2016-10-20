@@ -1,4 +1,7 @@
-/* server.js */
+/* 
+    server.js
+    entry point for the program
+*/
 
 var express = require('express');
 var path = require('path');

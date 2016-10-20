@@ -38,6 +38,7 @@ module.exports = function(app,passport){
         res.render('register');
     });
 
+    // add function to save profile?
     app.post('/register',passport.authenticate('local-signup',{
         successRedirect:'/profile',
         failureRedirect:'/register',
