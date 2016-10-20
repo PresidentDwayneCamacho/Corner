@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 
 var Posting = require('../models/posting');
 
-router.get('/posting',function(req,res,next){
+router.get('/posting',isLoggedIn,function(req,res,next){
     Posting.find()
     .sort({createdAt:'descending'})
     .exec(function(err,postings){
@@ -18,29 +18,35 @@ router.get('/posting',function(req,res,next){
 });
 
 // TODO: requires error checking
-router.post('/posting',function(req,res,next){
+router.post('/posting',isLoggedIn,function(req,res,next){
     var header = req.body.header;
     var category = req.body.category;
     var subcategories = req.body.subcategories;
     var textbody = req.body.textbody;
-    var createdAt = req.body.createdAt;
     var newPosting = new Posting({
         header: header,
         category: category,
         subcategories: subcategories,
-        textbody: textbody,
-        createdAt: createdAt
+        textbody: textbody
     });
     newPosting.save(next);
     res.redirect('/posting');
 });
 
-function ensureAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    } else {
-        res.redirect('/login');
-    }
+// should be more sophisticated search criteria
+router.post('/filter',function(req,res,next){
+    var criteria = req.body.criteria;
+    Posting.find({category: criteria})
+    .sort({createdAt:'descending'})
+    .exec(function(err,postings){
+        if(err){ return next(err); }
+        res.render('posting',{postings: postings})
+    });
+});
+
+function isLoggedIn(req,res,next){
+    if(req.isAuthenticated()){ return next(); }
+    res.redirect('/');
 }
 
 module.exports = router;

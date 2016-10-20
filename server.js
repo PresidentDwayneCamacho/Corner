@@ -40,9 +40,9 @@ app.use(passport.session());
 app.use(flash());
 
 app.use(posting);
-app.use(error);
 app.use(menu);
 require('./routes/profile.js')(app,passport);
+app.use(error);
 
 // listens to server
 app.set('port',process.env.PORT || 3000);

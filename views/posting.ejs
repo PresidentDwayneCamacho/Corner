@@ -23,18 +23,23 @@
             <textarea name="textbody" rows="5" cols="20" placeholder="Please describe"></textarea>
             <input type="submit" value="Post">
         </form>
-        <a href="login">logout</a>
+
         <h2>Entries</h2>
-        <% postings.forEach(function(post){ %>
-            <div>
-                <h3><%= post.header %></h3>
-                <p><%= post.category %></p>
-                <% post.subcategories.forEach(function(subcategory){ %>
-                    <p><% subcategory %></p>
-                <% }); %>
-                <p><%= post.textbody %></p>
-                <p><%= post.createdAt.toLocaleDateString() + ' ' + post.createdAt.toLocaleTimeString() %></p>
-            </div>
-        <% }); %>
+        <form action="/filter" method="post">
+            <input name="criteria" type="text" class="form-control" required>
+            <input type="submit" value="Filter">
+            <% postings.forEach(function(post){ %>
+                <div>
+                    <h3><%= post.header %></h3>
+                    <p><%= post.category %></p>
+                    <% post.subcategories.forEach(function(subcategory){ %>
+                        <p><% subcategory %></p>
+                    <% }); %>
+                    <p><%= post.textbody %></p>
+                    <p><%= post.createdAt.toLocaleDateString() + ' ' + post.createdAt.toLocaleTimeString() %></p>
+                </div>
+            <% }); %>
+        </form>
+
     </body>
 </html>
