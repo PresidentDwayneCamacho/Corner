@@ -33,10 +33,9 @@ router.post('/posting',isLoggedIn,function(req,res,next){
     res.redirect('/posting');
 });
 
-// should be more sophisticated search criteria
 router.post('/filter',function(req,res,next){
     var criteria = req.body.criteria;
-    Posting.find({category: criteria})
+    Posting.find({$text: {$search: criteria}})
     .sort({createdAt:'descending'})
     .exec(function(err,postings){
         if(err){ return next(err); }

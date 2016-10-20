@@ -13,4 +13,7 @@ var PostingSchema = mongoose.Schema({
     createdAt: {type: Date, default: Date.now}
 });
 
+// add text index for subcategories
+PostingSchema.index({header:'text',category:'text',textbody:'text'});
+
 module.exports = mongoose.model('Posting',PostingSchema);
