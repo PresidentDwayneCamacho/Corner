@@ -13,5 +13,4 @@ var PostingSchema = mongoose.Schema({
     createdAt: {type: Date, default: Date.now}
 });
 
-var Posting = mongoose.model('Posting',PostingSchema);
-module.exports = Posting;
+module.exports = mongoose.model('Posting',PostingSchema);
