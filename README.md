@@ -65,5 +65,5 @@ The 'action' variable refers to the router parameter.  The 'method' variable ref
 
 For the inner tag <input name="example_attribute">, the contents of the http request can be assigned to a variale in the above function with with the code:
 
-var attr = req.body.example_attribute
+        var attr = req.body.example_attribute
 
