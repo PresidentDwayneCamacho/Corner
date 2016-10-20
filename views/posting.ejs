@@ -7,10 +7,13 @@
     </head>
     <body>
 
-        <% include menu.ejs %>
 
-        <h1>Posts</h1>
-        <form action="/posting" method="post">
+
+        <% include menu.ejs %>
+        <div>
+        <div>
+        <h2>&nbsp; Corner</h2>
+        <form action="/posting" method="post" class="col-sm-4">
             <input name="header" type="text" class="form-control" placeholder="Heading" required autofocus>
             <input list="categories" name="category" type="text" class="form-control" placeholder="Category" required>
             <datalist id="categories">
@@ -20,26 +23,27 @@
                 <option value="Other"></option>
             </datalist>
             <input name="subcategories" type="text" class="form-control" placeholder="Type">
-            <textarea name="textbody" rows="5" cols="20" placeholder="Please describe"></textarea>
+            <textarea name="textbody" rows="9" class="form-control" placeholder="Please describe"></textarea>
             <input type="submit" value="Post">
         </form>
+        
+        <!---<a href="login">logout</a> --->    <!---removed, redundant with Account > Log Out -->
+        </div>
 
+        <div style="display: inline-block">
         <h2>Entries</h2>
-        <form action="/filter" method="post">
-            <input name="criteria" type="text" class="form-control" required>
-            <input type="submit" value="Filter">
-            <% postings.forEach(function(post){ %>
-                <div>
-                    <h3><%= post.header %></h3>
-                    <p><%= post.category %></p>
-                    <% post.subcategories.forEach(function(subcategory){ %>
-                        <p><% subcategory %></p>
-                    <% }); %>
-                    <p><%= post.textbody %></p>
-                    <p><%= post.createdAt.toLocaleDateString() + ' ' + post.createdAt.toLocaleTimeString() %></p>
-                </div>
-            <% }); %>
-        </form>
-
+        <% postings.forEach(function(post){ %>
+            <div>
+                <h3><%= post.header %></h3>
+                <p><%= post.category %></p>
+                <% post.subcategories.forEach(function(subcategory){ %>
+                    <p><% subcategory %></p>
+                <% }); %>
+                <p><%= post.textbody %></p>
+                <p><%= post.createdAt.toLocaleDateString() + ' ' + post.createdAt.toLocaleTimeString() %></p>
+            </div>
+        <% }); %>
+        </div>
+        </div>
     </body>
 </html>
