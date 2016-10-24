@@ -24,6 +24,7 @@ describe('regexFactor',function(){
         expect(regexFactor('akldsnf@cpp.edu')).to.not.be.null;
         expect(regexFactor('andy@gmail.com')).to.be.null;
         expect(regexFactor('rcohn@cpp.com')).to.be.null;
+        expect(regexFactor('rcohn@cpp.eduu')).to.be.null;
     });
     it('returns the prefix of address, i.e. expression before @cpp.edu',function(){
         expect(regexFactor('gharm@cpp.edu')).to.equal('gharm');
