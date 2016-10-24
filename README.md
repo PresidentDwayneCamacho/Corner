@@ -22,9 +22,11 @@ In a separate window, enter command:
 
 > node server
 
-or, if you want the server to restart automatically, enter:
+or, if you want the server to automatically restart when the back end is edited automatically, enter:
 
 > nodemon server
+
+This is extremely helpful, by the way.
 
 
 This should get it going, open browser to local host 3000.
