@@ -2,7 +2,7 @@ Running a test with mocha is accomplished by typing:
 
 > npm test
 
-in the base directory.
+in the command prompt directed at the base directory.
 
 
 
