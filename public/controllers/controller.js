@@ -78,6 +78,7 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 		sessionStorage.setItem('currentProfile',email);
 		$rootScope.authenticated = auth;
 		$rootScope.currentProfile = email;
+		return $rootScope.currentProfile;
 	}
 	
 	$scope.login = function(){
