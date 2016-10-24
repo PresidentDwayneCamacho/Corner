@@ -1,5 +1,5 @@
 /*
-    user.js
+    profile object
     model which replicates user information
 */
 
@@ -15,7 +15,7 @@ var profileSchema = mongoose.Schema({
 });
 
 profileSchema.methods.generateHash = function(password){
-    return bcrypt.hashSync(password,bcrypt.genSaltSync(8),null);
+    return bcrypt.hashSync(password,bcrypt.genSaltSync(10),null);
 }
 
 profileSchema.methods.validPassword = function(password){

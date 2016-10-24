@@ -1,6 +1,6 @@
 // passport setup
-var LocalStrategy    = require('passport-local').Strategy;
-var Profile       = require('../models/profile');
+var LocalStrategy = require('passport-local').Strategy;
+var Profile = require('../models/profile');
 
 module.exports = function(passport) {
 
@@ -21,13 +21,13 @@ module.exports = function(passport) {
         if (email){ email = email.toLowerCase(); }
         // asynchronous
         process.nextTick(function() {
-            Profile.findOne({ 'email' :  email }, function(err, profile) {
+            Profile.findOne({ 'email':  email }, function(err, profile) {
                 if (err){ return done(err); }
                 if (!profile){
-                    return done(null, false, req.flash('loginMessage', 'No user found.'));
+                    return done(null, false);
                 }
                 if (!profile.validPassword(password)){
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+                    return done(null, false);
                 }
                 else{ return done(null, profile); }
             });
@@ -49,15 +49,15 @@ module.exports = function(passport) {
                 Profile.findOne({ 'email': email }, function(err, profile) {
                     if (err){ return done(err); }
                     if (profile) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                        return done(null, false);
                     } else {
                         var re = new RegExp('@cpp.edu$');
                         if(!re.test(email)){
-                            return done(null, false, req.flash('signupMessage','Not a Cal Poly Pomona email account.'));
+                            return done(null, false);
                         }
                         var confirm = req.body.confirm;
                         if(password != confirm){
-                            return done(null,false,req.flash('signupMessage','Passwords do not match'));
+                            return done(null,false);
                         }
 
                         var newProfile = new Profile();
@@ -78,7 +78,7 @@ module.exports = function(passport) {
                     if (err)
                         return done(err);
                     if (profile) {
-                        return done(null, false, req.flash('loginMessage', 'That email is already taken.'));
+                        return done(null, false);
                     } else {
                         var profile = req.profile;
                         profile.email = email;

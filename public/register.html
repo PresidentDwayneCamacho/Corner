@@ -1,0 +1,13 @@
+<!--register.html-->
+<div ng-controller="authController">
+  <div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+  <form class="form-auth">
+    <p class="text-warning">{{error_message}}</p>
+    <input type="text" ng-model="profile.first" placeholder="First Name" class="form-control"><br>
+    <input type="text" ng-model="profile.last" placeholder="Last Name" class="form-control"><br>
+    <input type="email" ng-model="profile.email" placeholder="Email" class="form-control"><br>
+    <input type="password" ng-model="profile.password" placeholder="Password" class="form-control"><br>
+    <input type="password" ng-model="profile.confirm" placeholder="Confirm" class="form-control"><br>
+    <button class="btn btn-primary" ng-click="register()">Register</button>
+  </form>
+</div>

@@ -8,25 +8,17 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var flash = require('connect-flash');
-var morgan = require('morgan');
+var logger = require('morgan');
 var session = require('express-session');
-var mongoose = require('mongoose');
-
 var app = express();
-mongoose.connect('mongodb://localhost:27017/posting');
-
-var profile = require('./routes/profile');
-var posting = require('./routes/posting');
-var error = require('./routes/error');
-var menu = require('./routes/menu');
-
-app.set('views',path.join(__dirname,'views'));
-app.set('view engine','ejs');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/post-rough');
 require('./config/passport')(passport);
-
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(morgan('dev'));
+
+var api = require('./routes/api.js');
+
+app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -37,12 +29,8 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
-app.use(posting);
-app.use(menu);
-require('./routes/profile.js')(app,passport);
-app.use(error);
+app.use('/',api);
 
 // listens to server
 app.set('port',process.env.PORT || 3000);

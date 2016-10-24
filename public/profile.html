@@ -1,0 +1,23 @@
+<!--profile.html-->
+<div ng-controller="postController">
+	<div class="clearfix">
+		<form>
+			<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+			<input type="text" class="form-control" placeholder="Header" ng-model="posting.header" />
+			<input type="text" class="form-control" placeholder="Category" ng-model="posting.category" />
+			<input type="text" class="form-control" placeholder="Subcategory" ng-model="posting.subcategory" />
+			<textarea class="form-control" maxlength="200" rows="3" placeholder="Description" ng-model="posting.textbody"></textarea>
+			<button class="btn submit-btn pull-right" ng-click="submitPost()">Post</button>
+		</form>
+		<div id="post-stream">
+			<h4>Posts</h4>
+			<div class="post" ng-repeat="post in postings | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'"> 
+				<div>&nbsp;</div><div>&nbsp;</div>
+				<p>{{post.header}}</p>
+				<small>{{post.textbody}}</small>        
+				<small>{{post.category}}</small>
+				<small class="pull-right">{{post.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
+			</div>
+		</div>
+	</div>
+</div>

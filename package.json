@@ -9,6 +9,9 @@
   "author": "Trey Amador",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.5.8",
+    "angular-resource": "^1.5.8",
+    "angular-route": "^1.5.8",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
