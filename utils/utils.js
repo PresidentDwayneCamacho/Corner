@@ -8,5 +8,17 @@ function regexFactor(email){
     }
     return email.split('@')[0];
 }
-module.exports = regexFactor;
 
+function isPrime(value){
+    for(var i = 2; i < value; i++) {
+        if(value % i==0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+module.exports = {
+    regexFactor,
+    isPrime
+}
