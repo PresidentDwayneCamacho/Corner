@@ -46,4 +46,11 @@ describe('isPrime',function(){
         expect(chaiTest.isPrime(24)).to.be.false;
         expect(chaiTest.isPrime(31)).to.be.true;
     });
+
+
+describe('isPrime',function(){
+    it('tests math function library',function(){
+       var result = Math.max(1, 10);
+        expect(result==10).to.be.true;
+    });
 });
