@@ -23,7 +23,11 @@ app.config(function($routeProvider){
 		})
 		.when('/profile',{
 			templateUrl:'profile.html',
-			controller:'postController'
+			controller:'profileController'
+		})
+		.when('/posthub',{
+			templateUrl:'posthub.html',
+			controller:'hubController'
 		})
 		.when('/login',{
 			templateUrl:'main.html',
@@ -45,11 +49,33 @@ app.factory('postService',function($resource){
 
 
 app.controller('mainController',function($scope,$http,$rootScope,$location){
-	
+	// can be deleted if nothing to control
 });
 
 
-app.controller('postController',function($scope,$http,$rootScope,$location){
+app.controller('profileController',function($scope,$http,$rootScope,$location){
+
+	if(!sessionStorage.getItem('authenticated')){
+		$location.path('/');
+	}
+
+	var refresh = function(){
+		$http.get('/profile/'+$scope.currentProfile).success(function(res){
+			$scope.postings = res;
+			$scope.posting = '';
+		});
+	}
+	refresh();
+
+	$scope.submitPost = function(){
+		$http.post('/posting/'+$scope.currentProfile,$scope.posting).success(function(res){
+			refresh();
+		});
+	}
+});
+
+
+app.controller('hubController',function($scope,$http,$rootScope,$location){
 
 	if(!sessionStorage.getItem('authenticated')){
 		$location.path('/');
@@ -62,12 +88,6 @@ app.controller('postController',function($scope,$http,$rootScope,$location){
 		});
 	}
 	refresh();
-
-	$scope.submitPost = function(){
-		$http.post('/posting',$scope.posting).success(function(res){
-			refresh();
-		});
-	}
 });
 
 
@@ -78,7 +98,11 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 		sessionStorage.setItem('currentProfile',email);
 		$rootScope.authenticated = auth;
 		$rootScope.currentProfile = email;
-		return $rootScope.currentProfile;
+	}
+
+	var refresh = function(){
+		$scope.profile = '';
+		$scope.email = '';
 	}
 	
 	$scope.login = function(){
@@ -87,7 +111,9 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 				setProfile(true,res.profile.email);
 				console.log(sessionStorage.getItem('currentProfile'));
 				$location.path('/profile');
-			}	
+				
+			}
+			refresh();
 		});
 	}
 
@@ -97,11 +123,13 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 				setProfile(true,res.profile.email);
 				$location.path('/profile');
 			}
+			refresh();
 		});
 	}
 
 	$scope.signout = function(){
 		setProfile(false,'guest');
+		refresh();
 	}
 });
 

@@ -1,0 +1,18 @@
+<!--profile.html-->
+<div ng-controller="hubController">
+	<div class="clearfix">
+        <!-- TODO: filter out posts -->
+		<div id="post-stream">
+            <div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+			<h4>Look for listings on campus</h4>
+            <p>Search:&nbsp;<input type="text" ng-model="search"></p>
+			<div class="post" ng-repeat="post in postings | orderBy: '-_id' | filter:search" ng-class-odd="'odd'" ng-class-even="'even'"> 
+				<div>&nbsp;</div><div>&nbsp;</div>
+				<p>{{post.header}}</p>
+				<small>{{post.textbody}}</small>        
+				<small>{{post.category}}</small>
+				<small class="pull-right">{{post.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
+			</div>
+		</div>
+	</div>
+</div>

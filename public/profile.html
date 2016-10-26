@@ -1,5 +1,5 @@
 <!--profile.html-->
-<div ng-controller="postController">
+<div ng-controller="profileController">
 	<div class="clearfix">
 		<form>
 			<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
@@ -10,7 +10,7 @@
 			<button class="btn submit-btn pull-right" ng-click="submitPost()">Post</button>
 		</form>
 		<div id="post-stream">
-			<h4>Posts</h4>
+			<h4>Your Posts</h4>
 			<div class="post" ng-repeat="post in postings | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'"> 
 				<div>&nbsp;</div><div>&nbsp;</div>
 				<p>{{post.header}}</p>

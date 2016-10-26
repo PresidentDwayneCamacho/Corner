@@ -10,6 +10,7 @@ var PostingSchema = mongoose.Schema({
     category: {type: String, required: true},
     subcategories: {type: String},
     textbody: {type: String, required: true},
+    createdBy: {type: String, required: true},
     createdAt: {type: Date, default: Date.now}
 });
 

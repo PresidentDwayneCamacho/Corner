@@ -1,5 +1,7 @@
 /**
  * the backend routing system
+ * receives $http requests from angular router
+ * sends res.send(...) responses back to angular
  */
 
 var express = require('express');
@@ -9,28 +11,23 @@ var Posting = require('../models/posting');
 var passport = require('passport');
 
 
+// tests authentication
 function isAuthenticated(req,res,next){
     if(req.isAuthenticated()){ return next(); }
     res.redirect('/');
 }
 
 
+// renders the posting screen
 router.get('/posting',isAuthenticated,function(req,res,next){
-    console.log('get posting from router');
     Posting.find(function(err,posts){
         if(err){ return res.send(500,err); }
         return res.send(posts);
     });
 });
 
-router.get('/posting/:id',isAuthenticated,function(req,res,next){
-    console.log('get posting from router with id');
-    Posting.find({email:req.params.id},function(err,posts){
-        if(err){ return res.send(500,err); }
-        return res.send(posts);
-    });
-});
 
+// can this method be deleted?
 router.post('/posting',isAuthenticated,function(req,res,next){
     var newPosting = new Posting();
     newPosting.header = req.body.header;
@@ -44,8 +41,32 @@ router.post('/posting',isAuthenticated,function(req,res,next){
 });
 
 
-router.get('/profile',isAuthenticated,function(req,res,next){
-    Posting.find(function(err,posts){
+router.get('/posting/:id',isAuthenticated,function(req,res,next){
+    console.log('get posting from router with id');
+    Posting.find({email:req.params.id},function(err,posts){
+        if(err){ return res.send(500,err); }
+        return res.send(posts);
+    });
+});
+
+
+router.post('/posting/:id',isAuthenticated,function(req,res,next){
+    var newPosting = new Posting();
+    newPosting.header = req.body.header;
+    newPosting.category = req.body.category;
+    newPosting.subcategory = req.body.subcategory;
+    newPosting.textbody = req.body.textbody;
+    newPosting.createdBy = req.params.id;
+    console.log('From the id-specific post: ' + req.params.id);
+    newPosting.save(function(err,posts){
+        if(err){ return res.send(500,err); }
+        return res.json(posts);
+    });
+});
+
+
+router.get('/profile/:id',isAuthenticated,function(req,res,next){
+    Posting.find({createdBy: req.params.id},function(err,posts){
         if(err){ return res.send(500,err); }
         return res.send(posts);
     });
