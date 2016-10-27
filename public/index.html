@@ -1,4 +1,7 @@
 <!--index.html-->
+<!-- main header bar of application -->
+<!-- other pages are nested in ng-view -->
+<!-- angular functions begin with ng- (ex ng-model) -->
 <html>
   <head>
     <title>Corner</title>
@@ -23,7 +26,7 @@
           </p>
           <p class="navbar-right navbar-text" ng-show="authenticated">
             <a href="#/profile">Profile</a>
-            <a href="#/posthub">Post Hub</a> <!-- This will be used once a large hub is made -->
+            <a href="#/posthub">Post Hub</a>
             <a href="#/" ng-click="signout()">Log out</a>
           </p>
         </div>

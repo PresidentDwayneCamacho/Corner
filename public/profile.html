@@ -3,8 +3,10 @@
 	<div class="clearfix">
 		<form>
 			<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+			
 			<input type="text" class="form-control" placeholder="Header" ng-model="posting.header" />
 			<input type="text" class="form-control" placeholder="Category" ng-model="posting.category" />
+			<!--<input list="category" class="form-control" type="list" ng-model="posting.category" placeholder="Category">-->
 			<input type="text" class="form-control" placeholder="Subcategory" ng-model="posting.subcategory" />
 			<textarea class="form-control" maxlength="200" rows="3" placeholder="Description" ng-model="posting.textbody"></textarea>
 			<button class="btn submit-btn pull-right" ng-click="submitPost()">Post</button>

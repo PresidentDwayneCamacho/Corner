@@ -1,6 +1,6 @@
 /*
     profile object
-    model which replicates user information
+    model which replicates user information for mongodb/mongoose
 */
 
 var mongoose = require('mongoose');

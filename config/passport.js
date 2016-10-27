@@ -1,4 +1,6 @@
 // passport setup
+// allows user to sign in/out
+// check documentation for information
 var LocalStrategy = require('passport-local').Strategy;
 var Profile = require('../models/profile');
 

@@ -3,18 +3,18 @@
 */
 
 
-// hcooper@cpp.edu
+// runs upon starting angular
 var app = angular.module('postApp',['ngRoute','ngResource'])
 	.run(function($http,$rootScope){
-		if(sessionStorage.getItem('currentProfile') == undefined){
-			sessionStorage.setItem('currentProfile','guest');
+		if(sessionStorage.getItem('currentProfile') === undefined){
 			sessionStorage.setItem('authenticated',false);
-			$rootScope.currentProfile = 'guest';
+			$rootScope.currentProfile = 'Guest';
 			$rootScope.authenticated = false;
 		}
 	});
 
 
+// attaches controllers to pages
 app.config(function($routeProvider){
 	$routeProvider
 		.when('/', {
@@ -53,12 +53,14 @@ app.controller('mainController',function($scope,$http,$rootScope,$location){
 });
 
 
+// controls profile
 app.controller('profileController',function($scope,$http,$rootScope,$location){
 
 	if(!sessionStorage.getItem('authenticated')){
 		$location.path('/');
 	}
 
+	// puts html response into postings, and resets posting text spaces
 	var refresh = function(){
 		$http.get('/profile/'+$scope.currentProfile).success(function(res){
 			$scope.postings = res;
@@ -67,6 +69,7 @@ app.controller('profileController',function($scope,$http,$rootScope,$location){
 	}
 	refresh();
 
+	// send post request to backend api router
 	$scope.submitPost = function(){
 		$http.post('/posting/'+$scope.currentProfile,$scope.posting).success(function(res){
 			refresh();
@@ -74,13 +77,15 @@ app.controller('profileController',function($scope,$http,$rootScope,$location){
 	}
 });
 
-
+// controls the posting hub
 app.controller('hubController',function($scope,$http,$rootScope,$location){
 
+	// redirect if not authenticated
 	if(!sessionStorage.getItem('authenticated')){
 		$location.path('/');
 	}
 
+	// restore post blanks
 	var refresh = function(){
 		$http.get('/posting').success(function(res){
 			$scope.postings = res;
@@ -91,8 +96,11 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 });
 
 
+// TODO change $scope.profile.email to simply $scope.profile
+// controls authentication procedure
 app.controller('authController',function($scope,$http,$rootScope,$location){
 
+	// indicate user is signed in to router
 	var setProfile = function(auth,email){
 		sessionStorage.setItem('authenticated',auth);
 		sessionStorage.setItem('currentProfile',email);
@@ -100,35 +108,40 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 		$rootScope.currentProfile = email;
 	}
 
+	// resets the sign in blanks
 	var refresh = function(){
-		$scope.profile = '';
-		$scope.email = '';
+		$scope.profile.email = '';
+		$scope.profile.password = '';
 	}
 	
+	// login, set username and authentication boolean
 	$scope.login = function(){
 		$http.post('/login',$scope.profile).success(function(res){
 			if(res.state == 'success'){
 				setProfile(true,res.profile.email);
-				console.log(sessionStorage.getItem('currentProfile'));
 				$location.path('/profile');
-				
-			}
+			} // else send an error message
 			refresh();
 		});
 	}
 
+	// register, reset blanks
 	$scope.register = function(){
 		$http.post('/register',$scope.profile).success(function(res){
 			if(res.state == 'success'){
 				setProfile(true,res.profile.email);
 				$location.path('/profile');
-			}
+			} // else send an error message
 			refresh();
+			$scope.profile.first = '';
+			$scope.profile.last = '';
+			$scope.profile.confirm = '';
 		});
 	}
 
+	// unauthenticated, signs user out
 	$scope.signout = function(){
-		setProfile(false,'guest');
+		setProfile(false,'Guest');
 		refresh();
 	}
 });

@@ -19,6 +19,7 @@ function isAuthenticated(req,res,next){
 
 
 // renders the posting screen
+// returns the posts to angular router
 router.get('/posting',isAuthenticated,function(req,res,next){
     Posting.find(function(err,posts){
         if(err){ return res.send(500,err); }
@@ -28,6 +29,7 @@ router.get('/posting',isAuthenticated,function(req,res,next){
 
 
 // can this method be deleted?
+// puts new post on database
 router.post('/posting',isAuthenticated,function(req,res,next){
     var newPosting = new Posting();
     newPosting.header = req.body.header;
@@ -41,8 +43,9 @@ router.post('/posting',isAuthenticated,function(req,res,next){
 });
 
 
+// returns a user's post to the angular router
+// user id is passed, and query database by id
 router.get('/posting/:id',isAuthenticated,function(req,res,next){
-    console.log('get posting from router with id');
     Posting.find({email:req.params.id},function(err,posts){
         if(err){ return res.send(500,err); }
         return res.send(posts);
@@ -50,6 +53,7 @@ router.get('/posting/:id',isAuthenticated,function(req,res,next){
 });
 
 
+// place post into database, including poster id
 router.post('/posting/:id',isAuthenticated,function(req,res,next){
     var newPosting = new Posting();
     newPosting.header = req.body.header;
@@ -65,6 +69,8 @@ router.post('/posting/:id',isAuthenticated,function(req,res,next){
 });
 
 
+// returns a user's post to the angular router
+// user id is passed, and query database by id
 router.get('/profile/:id',isAuthenticated,function(req,res,next){
     Posting.find({createdBy: req.params.id},function(err,posts){
         if(err){ return res.send(500,err); }
@@ -73,6 +79,7 @@ router.get('/profile/:id',isAuthenticated,function(req,res,next){
 });
 
 
+// returns success or failure message to database from login/register routes
 router.get('/success',function(req,res){
     res.send({state:'success', profile: req.user ? req.user : null});
 });
