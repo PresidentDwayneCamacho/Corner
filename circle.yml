@@ -40,9 +40,9 @@ test:
 
 ## Customize deployment commands
 # We can deply using SSH
-#deployment:
-#  production:
-#    branch: master
-#    commands:
-#      - ./deploy.sh
+deployment:
+  production:
+    branch: circle
+    commands:
+      - ./deploy.sh
 #  - scp -r circle-pushing/* username@server:/pathtoput
