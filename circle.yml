@@ -44,12 +44,4 @@ deployment:
   production:
     branch: circle
     commands:
-      - cd webapps/Corner
-      - pgrep -l jabba
-      - pkill jabba
-      - git fetch
-      - git checkout circle
-      - git pull
-      - npm install
-      - nohup npm start &
-      #- ./deploy.sh
+      - sh ./deploy.sh
