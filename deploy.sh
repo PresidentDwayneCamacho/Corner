@@ -1,6 +1,7 @@
-cd ../webapps
-pgrep -l jabb	
-node pkill --signal SIGTERM jabba
+cd webapps/Corner
+pgrep -l jabba	
+node pkill jabba
 git fetch
+git checkout circle
 node install
-node start
+nohup npm start &
