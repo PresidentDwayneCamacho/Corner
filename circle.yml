@@ -44,9 +44,5 @@ deployment:
   production:
     branch: circle
     commands:
-      - uname -a
-      - cat /proc/version
-      - ssh ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com 'uname -a'
-      - ssh ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com 'cat /proc/version'
-      # Secure copy folder
-      #- scp -r circle ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com:/webapps/junk/
+      - ssh ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com "echo ${CIRCLE_BRANCH}"
+      - ssh ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com "./scripts/deploy.sh"
