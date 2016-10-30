@@ -1,4 +1,3 @@
-HELLO="hello, i got deployed"
+HELLO="hello, i got deployed 2"
 echo $HELLO
-uname -a
-cat /proc/version
+

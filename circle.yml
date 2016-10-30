@@ -45,3 +45,5 @@ deployment:
     branch: circle
     commands:
       - ./deploy.sh
+      - uname -a
+      - cat /proc/version
