@@ -44,5 +44,12 @@ deployment:
   production:
     branch: circle
     commands:
-      - ./deploy.sh
-#  - scp -r circle-pushing/* username@server:/pathtoput
+      - cd webapps/Corner
+      - pgrep -l jabba
+      - pkill jabba
+      - git fetch
+      - git checkout circle
+      - git pull
+      - npm install
+      - nohup npm start &
+      #- ./deploy.sh
