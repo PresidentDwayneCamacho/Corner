@@ -44,7 +44,6 @@ deployment:
   production:
     branch: circle
     commands:
-      - ./deploy.sh
       - uname -a
       - cat /proc/version
       - ssh ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com 'uname -a'
