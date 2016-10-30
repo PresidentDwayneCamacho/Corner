@@ -44,4 +44,4 @@ deployment:
   production:
     branch: circle
     commands:
-      - sh ./deploy.sh
+      - ./deploy.sh
