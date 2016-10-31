@@ -12,7 +12,6 @@ var passport = require('passport');
 var logger = require('morgan');
 var session = require('express-session');
 var app = express();
-process.title = "jabba";
 
 // connect to database
 var mongoose = require('mongoose');
