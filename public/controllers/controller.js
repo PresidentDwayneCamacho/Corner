@@ -4,17 +4,9 @@
 
 
 // runs upon starting angular
-var app = angular.module('postApp',['ngRoute','ngResource'])
-	.run(function($http,$rootScope){
-		if(sessionStorage.getItem('currentProfile') === undefined){
-			sessionStorage.setItem('authenticated',false);
-			$rootScope.currentProfile = 'Guest';
-			$rootScope.authenticated = false;
-		}
-	});
+var app = angular.module('postApp',['ngRoute','ngResource']);
 
 
-// attaches controllers to pages
 app.config(function($routeProvider){
 	$routeProvider
 		.when('/', {
@@ -27,6 +19,10 @@ app.config(function($routeProvider){
 		})
 		.when('/posthub',{
 			templateUrl:'posthub.html',
+			controller:'hubController'
+		})
+		.when('/inbox',{
+			templateUrl:'inbox.html',
 			controller:'hubController'
 		})
 		.when('/login',{
@@ -43,49 +39,79 @@ app.config(function($routeProvider){
 	});
 
 
-app.factory('postService',function($resource){
-	return $resource('/api/posts/:id');
+app.run(function($http,$rootScope){
+
+	if(sessionStorage.getItem('currentProfile') == null || sessionStorage.getItem('currentProfile') == 'Guest'){
+		sessionStorage.setItem('currentProfile','Guest');
+		$rootScope.authenticated = false;
+	} else {
+		$rootScope.authenticated = true;
+	}
+
+	// add some methods...
+
 });
 
 
 app.controller('mainController',function($scope,$http,$rootScope,$location){
-	// can be deleted if nothing to control
+
+	if($rootScope.authenticated){
+		// add additional methods later
+	} else {
+		$location.path('/');
+	}
+
 });
 
 
 // controls profile
 app.controller('profileController',function($scope,$http,$rootScope,$location){
 
-	if(!sessionStorage.getItem('authenticated')){
+	// tests if authenticated
+	if($rootScope.authenticated){
+		// puts html response into postings, and resets posting text spaces
+		var refresh = function(){
+			var profileObj = JSON.parse(sessionStorage.getItem('currentProfile'));
+			$http.get('/profile/'+profileObj.email).success(function(res){
+				$scope.postings = res;
+				$scope.posting = '';
+			});
+		}
+		refresh();
+
+		// sends post to backend router
+		$scope.submitPost = function(){
+			var profileObj = JSON.parse(sessionStorage.getItem('currentProfile'));
+			$scope.posting.first = profileObj.first;
+			$scope.posting.last = profileObj.last;
+			$scope.posting.email = profileObj.email;
+			// parse profile, add to posting, send
+			$http.post('/posting/'+profileObj.email,$scope.posting).success(function(res){
+				refresh();
+			});
+		}
+
+		// delete a specific post
+		$scope.deletePost = function(id){
+			$http.delete('/posting/'+id).success(function(res){
+				refresh();
+			});
+		}
+	} else {
 		$location.path('/');
 	}
 
-	// puts html response into postings, and resets posting text spaces
-	var refresh = function(){
-		$http.get('/profile/'+$scope.currentProfile).success(function(res){
-			$scope.postings = res;
-			$scope.posting = '';
-		});
-	}
-	refresh();
-
-	// send post request to backend api router
-	$scope.submitPost = function(){
-		$http.post('/posting/'+$scope.currentProfile,$scope.posting).success(function(res){
-			refresh();
-		});
-	}
 });
+
 
 // controls the posting hub
 app.controller('hubController',function($scope,$http,$rootScope,$location){
 
-	// redirect if not authenticated
-	if(!sessionStorage.getItem('authenticated')){
-		$location.path('/');
-	}
+	$scope.messageHeader = '';
+	$scope.messageRecipient = '';
+	$scope.messageBody = '';
 
-	// restore post blanks
+	// resets postings
 	var refresh = function(){
 		$http.get('/posting').success(function(res){
 			$scope.postings = res;
@@ -93,19 +119,59 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 		});
 	}
 	refresh();
+
+	$scope.sampleMessage = 'Hello';
+
+	if($rootScope.authenticated){
+
+		// begin writing a message to another user
+		$scope.beginMessage = function(posting){
+			// how does one return this to page?
+			$http.post('/beginMessage',posting).success(function(res){
+				$rootScope.outline = {
+					header: 'RE: '+res.header,
+					recipient: res.recipient,
+					textbody: res.textbody
+				};
+				$location.path('/inbox');
+			});
+		}
+
+		// send user message
+		$scope.sendMessage = function(){
+			var senderProfile = JSON.parse(sessionStorage.getItem('currentProfile'));
+			var message = {
+				header: $rootScope.outline.header,
+				sender: {
+					email: senderProfile.email,
+					first: senderProfile.first,
+					last: senderProfile.last
+				},
+				recipient: $rootScope.outline.recipient,
+				textbody: $rootScope.outline.textbody
+			};
+			//console.log('frontend router sendMessage ' + message.recipient + ' ' + message.sender.email);
+			
+			$http.post('sendMessage',message).success(function(res){
+				// if success, empty the $rootScope.outline.textbody / header / recipient
+
+			});
+		}
+
+	} else {
+		$location.path('/');
+	}
+
 });
 
 
-// TODO change $scope.profile.email to simply $scope.profile
 // controls authentication procedure
 app.controller('authController',function($scope,$http,$rootScope,$location){
 
 	// indicate user is signed in to router
-	var setProfile = function(auth,email){
-		sessionStorage.setItem('authenticated',auth);
-		sessionStorage.setItem('currentProfile',email);
+	var setProfile = function(auth,profile){
+		sessionStorage.setItem('currentProfile',profile);
 		$rootScope.authenticated = auth;
-		$rootScope.currentProfile = email;
 	}
 
 	// resets the sign in blanks
@@ -113,12 +179,13 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 		$scope.profile.email = '';
 		$scope.profile.password = '';
 	}
-	
+
 	// login, set username and authentication boolean
 	$scope.login = function(){
 		$http.post('/login',$scope.profile).success(function(res){
 			if(res.state == 'success'){
-				setProfile(true,res.profile.email);
+				var profileJSON = JSON.stringify(res.profile);
+				setProfile(true,profileJSON);
 				$location.path('/profile');
 			} // else send an error message
 			refresh();
@@ -129,7 +196,8 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 	$scope.register = function(){
 		$http.post('/register',$scope.profile).success(function(res){
 			if(res.state == 'success'){
-				setProfile(true,res.profile.email);
+				var profileJSON = JSON.stringify(res.profile);
+				setProfile(true,profileJSON);
 				$location.path('/profile');
 			} // else send an error message
 			refresh();
@@ -142,7 +210,9 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 	// unauthenticated, signs user out
 	$scope.signout = function(){
 		setProfile(false,'Guest');
-		refresh();
+		//refresh();
+		$location.path('/');
 	}
+
 });
 

@@ -8,9 +8,13 @@ var mongoose = require('mongoose');
 var PostingSchema = mongoose.Schema({
     header: {type: String, required: true},
     category: {type: String, required: true},
-    subcategories: [{type: String}],
+    subcategories: {type: String},
     textbody: {type: String, required: true},
-    createdBy: {type: String, required: true},
+    createdBy: {
+        email: {type: String, required: true},
+        first: {type: String, required: true},
+        last: {type: String, required: true}
+    },
     createdAt: {type: Date, default: Date.now}
 });
 

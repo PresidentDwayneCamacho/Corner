@@ -31,7 +31,7 @@ module.exports = function(passport) {
                 if (!profile.validPassword(password)){
                     return done(null, false);
                 }
-                else{ return done(null, profile); }
+                else { return done(null, profile); }
             });
         });
 

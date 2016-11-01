@@ -1,0 +1,26 @@
+<!--inbox.html-->
+<div ng-controller="hubController">
+	<div class="clearfix">
+        <!-- TODO: filter out posts -->
+		<div id="post-stream">
+            <div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+			<h4>Private inbox</h4>
+
+			<form>
+				<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+				<input type="text" class="form-control" ng-model="outline.header" placeholder="Header" />
+				<input type="text" class="form-control" ng-model="outline.recipient" placeholder="Recipient" />
+				<textarea class="form-control" maxlength="200" rows="3" ng-model="outline.textbody" placeholder="Message"></textarea>
+				<button class="btn submit-btn pull-right" ng-click="sendMessage()">Send</button>
+			</form>
+			<div class="post" ng-repeat="message in messages | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'"> 
+				<div>&nbsp;</div><div>&nbsp;</div>
+				<!-- color message depending on whether it is sent or recieved? -->
+				<p>{{message.header}}</p>
+				<small>{{message.textbody}}</small>
+				<small>{{message.sender.first}} {{message.sender.last}}</small>
+				<small class="pull-right">{{message.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
+			</div>
+		</div>
+	</div>
+</div>

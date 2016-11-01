@@ -7,7 +7,9 @@
 var express = require('express');
 var router = express();
 var path = require('path');
+var Profile = require('../models/profile');
 var Posting = require('../models/posting');
+var Message = require('../models/message');
 var passport = require('passport');
 
 
@@ -28,25 +30,10 @@ router.get('/posting',isAuthenticated,function(req,res,next){
 });
 
 
-// can this method be deleted?
-// puts new post on database
-router.post('/posting',isAuthenticated,function(req,res,next){
-    var newPosting = new Posting();
-    newPosting.header = req.body.header;
-    newPosting.category = req.body.category;
-    newPosting.subcategory = req.body.subcategory;
-    newPosting.textbody = req.body.textbody;
-    newPosting.save(function(err,posts){
-        if(err){ return res.send(500,err); }
-        return res.json(posts);
-    });
-});
-
-
 // returns a user's post to the angular router
 // user id is passed, and query database by id
 router.get('/posting/:id',isAuthenticated,function(req,res,next){
-    Posting.find({email:req.params.id},function(err,posts){
+    Posting.find({'createdBy.email':req.params.id},function(err,posts){
         if(err){ return res.send(500,err); }
         return res.send(posts);
     });
@@ -55,13 +42,19 @@ router.get('/posting/:id',isAuthenticated,function(req,res,next){
 
 // place post into database, including poster id
 router.post('/posting/:id',isAuthenticated,function(req,res,next){
-    var newPosting = new Posting();
-    newPosting.header = req.body.header;
-    newPosting.category = req.body.category;
-    newPosting.subcategory = req.body.subcategory;
-    newPosting.textbody = req.body.textbody;
-    newPosting.createdBy = req.params.id;
-    console.log('From the id-specific post: ' + req.params.id);
+
+    var newPosting = new Posting({
+        header: req.body.header,
+        category: req.body.category,
+        subcategory: req.body.subcategory,
+        textbody: req.body.textbody,
+        createdBy: {
+            email: req.body.email,
+            first: req.body.first,
+            last: req.body.last
+        }
+    });
+
     newPosting.save(function(err,posts){
         if(err){ return res.send(500,err); }
         return res.json(posts);
@@ -69,13 +62,52 @@ router.post('/posting/:id',isAuthenticated,function(req,res,next){
 });
 
 
+// delete post
+router.delete('/posting/:id',function(req,res){
+    console.log('Deleted post back router ' + req.params.id);
+    Posting.remove({_id: req.params.id},function(err,posts){
+        if(err){ return res.send(500); }
+        return res.send(posts);
+    });
+});
+
+
 // returns a user's post to the angular router
 // user id is passed, and query database by id
 router.get('/profile/:id',isAuthenticated,function(req,res,next){
-    Posting.find({createdBy: req.params.id},function(err,posts){
+    //console.log('get profile '+req.params.id);
+    Posting.find({'createdBy.email': req.params.id},function(err,posts){
         if(err){ return res.send(500,err); }
         return res.send(posts);
     });
+});
+
+
+router.post('/beginMessage',function(req,res,next){
+    res.send({
+        header: req.body.header,
+        recipient: req.body.createdBy.email,
+        textbody: ''
+    });
+});
+
+
+// add promises to this...
+router.post('/sendMessage',function(req,res,next){
+    //console.log('backend post sendMessage: ' + req.body.recipient);
+
+    Profile.find({email:req.body.recipient},function(err,profile){
+        //console.log('beginning of profile find');
+        if(err){ return res.send(500,err); }
+        var receiver = {
+            email: profile.email,
+            first: profile.first,
+            last: profile.last
+        };
+
+        console.log('in Profile.find ' + receiver.email);
+    });
+    
 });
 
 
