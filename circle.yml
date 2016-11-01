@@ -1,0 +1,49 @@
+## Customize the test machine
+machine:
+
+  timezone:
+    America/Los_Angeles # Set the timezone
+
+  # Later figure out how to pre-install cache version of Node 4.6.0 or 4.6.1
+  # pre:
+  # - curl -k -L -o phantomjs.tar.bz2 http://phantomjs.googlecode.com/files/phantomjs-1.8.2-linux-x86_64.tar.bz2
+  #  - tar -jxf phantomjs.tar.bz2
+  
+  # Version of node to use
+  node:
+    version: 4.2.6
+
+
+## Customize database setup
+#database:
+#  pre:
+    # Stop MongoDB
+    #- sudo service mongodb stop
+    # Download MongoDB 3.2.3
+    #- curl -Ol https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1204-3.2.3.tgz
+    # Untar it
+    #- tar -zxvf mongodb-linux-x86_64-ubuntu1204-3.2.3.tgz
+    # Create data directory
+    #- mkdir -p ./data/db
+    # Fork MongoDB and log to './mongod.log'. Print the log file if it failed.
+    #- ./mongodb-linux-x86_64-ubuntu1204-3.2.3/bin/mongod --dbpath ./data/db --logpath ./mongod.log --fork || cat ./mongod.log
+
+## Customize dependencies
+dependencies:
+  override:
+    - npm install
+
+## Customize test commands
+test:
+  override:
+    - npm test
+
+## Customize deployment commands
+# We can deply using SSH
+deployment:
+  production:
+    branch: master
+    commands:
+      - ssh ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com "echo ${CIRCLE_BRANCH}"
+      - ssh ec2-user@ec2-35-161-215-134.us-west-2.compute.amazonaws.com "./scripts/deploy.sh ${CIRCLE_BRANCH}"
+      
