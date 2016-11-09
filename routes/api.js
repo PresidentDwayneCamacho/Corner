@@ -64,7 +64,7 @@ router.post('/posting/:id',isAuthenticated,function(req,res,next){
 
 // delete post
 router.delete('/posting/:id',function(req,res){
-    console.log('Deleted post back router ' + req.params.id);
+    //console.log('Deleted post back router ' + req.params.id);
     Posting.remove({_id: req.params.id},function(err,posts){
         if(err){ return res.send(500); }
         return res.send(posts);
@@ -83,32 +83,99 @@ router.get('/profile/:id',isAuthenticated,function(req,res,next){
 });
 
 
+// work on this
 router.post('/beginMessage',function(req,res,next){
-    res.send({
-        header: req.body.header,
-        recipient: req.body.createdBy.email,
-        textbody: ''
+    //console.log('beginning of begin message backend ');
+    Profile.find({email:req.body.createdBy.email},function(err,profile){
+        if(err){ return res.send(500,err); }
+        return res.send({
+            recipient: req.body.createdBy,
+            header: req.body.header,
+            textbody: ''
+        });
     });
 });
 
 
+router.post('/sendMessage',function(req,res,next){
+    //console.log('sendMessage backend profile '+req.body.sender.email);
+    var newMessage = new Message({
+        header: req.body.header,
+        sender:{
+            email: req.body.sender.email,
+            first: req.body.sender.first,
+            last: req.body.sender.last
+        },
+        recipient:{
+            email: req.body.recipient.email,
+            first: req.body.recipient.first,
+            last: req.body.recipient.last
+        },
+        textbody: req.body.textbody
+    });
+
+    newMessage.save(function(err,messages){
+        if(err){ return res.send(500,err); }
+        return res.json(messages);
+    });
+});
+
+
+// queries database for user and recipient messages
+// returns to frontend
+router.get('/inbox/:id',function(req,res,next){
+    var profile = JSON.parse(req.params.id);
+    //console.log('Backend get inbox ' + profiles.sender + ' ' + profiles.recipient);
+    Message.find({
+        'sender.email':profile.email,
+        'recipient.email':profile.email
+    },function(err,messages){
+        console.log('In backend message find');
+        if(err){ return res.send(500,err); }
+        return res.send(messages);
+    });
+});
+
+
+/* 
+var MessageSchema = mongoose.Schema({
+    header: {type: String},
+    sender: {
+        email: {type: String, required: true},
+        first: {type: String, required: true},
+        last: {type: String, required: true}
+    },
+    recipient: {
+        email: {type: String, required: true},
+        first: {type: String, required: true},
+        last: {type: String, required: true}
+    },
+    textbody: {type: String, required: true},
+    createdAt: {type: Date, default: Date.now}
+});
+
+*/
+
+
+/*
 // add promises to this...
 router.post('/sendMessage',function(req,res,next){
     //console.log('backend post sendMessage: ' + req.body.recipient);
 
-    Profile.find({email:req.body.recipient},function(err,profile){
-        //console.log('beginning of profile find');
-        if(err){ return res.send(500,err); }
-        var receiver = {
-            email: profile.email,
-            first: profile.first,
-            last: profile.last
-        };
-
-        console.log('in Profile.find ' + receiver.email);
-    });
-    
+    var query_email = function(){
+        return new Promise(function(resolve,reject){
+            Profile.find({email:req.body.recipient},function(err,profile){
+                if(err){ return res.send(500,err); }
+                var receiver = {
+                    email: profile.email,
+                    first: profile.first,
+                    last: profile.last
+                };
+            });
+        });
+    }
 });
+*/
 
 
 // returns success or failure message to database from login/register routes

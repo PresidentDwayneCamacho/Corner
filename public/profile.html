@@ -16,6 +16,11 @@
 				<p>{{post.header}}</p>
 				<small>{{post.category}}</small>
 				<small>{{post.textbody}}</small>
+				<!-- Potential solution for image interface?
+				<div ng-repeat="image in postings.images">
+					<img src="{{image}}"/>
+				</div>
+				-->
 				<small class="pull-right">{{post.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
 				<button class="btn submit-btn" ng-click="deletePost(post._id)">Delete</button>
 			</div>

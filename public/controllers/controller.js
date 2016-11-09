@@ -120,41 +120,56 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 	}
 	refresh();
 
-	$scope.sampleMessage = 'Hello';
 
 	if($rootScope.authenticated){
 
+		var refreshInbox = function(){
+			$rootScope.outline = '';
+		}
+
+		// update the messaging inbox
+		var updateInbox = function(){
+			$http.get('/inbox/'+sessionStorage.getItem('currentProfile')).success(function(res){
+				$scope.messages = res;
+			});
+		}
+		updateInbox();
+
 		// begin writing a message to another user
 		$scope.beginMessage = function(posting){
-			// how does one return this to page?
 			$http.post('/beginMessage',posting).success(function(res){
 				$rootScope.outline = {
 					header: 'RE: '+res.header,
-					recipient: res.recipient,
+					recipient: res.recipient.email,
+					profile: res.recipient,
 					textbody: res.textbody
 				};
 				$location.path('/inbox');
+				updateInbox();
 			});
 		}
 
-		// send user message
+		// send message to user, logging it in database
 		$scope.sendMessage = function(){
-			var senderProfile = JSON.parse(sessionStorage.getItem('currentProfile'));
+			var currentProfile = JSON.parse(sessionStorage.getItem('currentProfile'));
 			var message = {
 				header: $rootScope.outline.header,
-				sender: {
-					email: senderProfile.email,
-					first: senderProfile.first,
-					last: senderProfile.last
+				sender:{
+					email: currentProfile.email,
+					first: currentProfile.first,
+					last: currentProfile.last
 				},
-				recipient: $rootScope.outline.recipient,
+				recipient:{
+					email: $rootScope.outline.profile.email,
+					first: $rootScope.outline.profile.first,
+					last: $rootScope.outline.profile.last
+				},
 				textbody: $rootScope.outline.textbody
 			};
-			//console.log('frontend router sendMessage ' + message.recipient + ' ' + message.sender.email);
-			
-			$http.post('sendMessage',message).success(function(res){
-				// if success, empty the $rootScope.outline.textbody / header / recipient
 
+			$http.post('/sendMessage',message).success(function(res){
+				updateInbox();
+				refreshInbox();
 			});
 		}
 
