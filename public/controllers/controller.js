@@ -48,8 +48,6 @@ app.run(function($http,$rootScope){
 		$rootScope.authenticated = true;
 	}
 
-	// add some methods...
-
 });
 
 
@@ -123,13 +121,17 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 
 	if($rootScope.authenticated){
 
+		// resets the inbox
 		var refreshInbox = function(){
 			$rootScope.outline = '';
 		}
 
 		// update the messaging inbox
 		var updateInbox = function(){
-			$http.get('/inbox/'+sessionStorage.getItem('currentProfile')).success(function(res){
+			var currentProfile = JSON.parse(sessionStorage.getItem('currentProfile'));
+			var email = currentProfile.email;
+			console.log('update inbox ' + email);
+			$http.get('/inbox/'+email).success(function(res){
 				$scope.messages = res;
 			});
 		}
@@ -144,6 +146,7 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 					profile: res.recipient,
 					textbody: res.textbody
 				};
+				console.log('begin message ' + $rootScope.outline.recipient);
 				$location.path('/inbox');
 				updateInbox();
 			});
