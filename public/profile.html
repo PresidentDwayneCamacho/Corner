@@ -4,8 +4,18 @@
 		<form>
 			<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
 			<input type="text" class="form-control" placeholder="Header" ng-model="posting.header" />
-			<input type="text" class="form-control" placeholder="Category" ng-model="posting.category" />
-			<input type="text" class="form-control" placeholder="Subcategory" ng-model="posting.subcategory" />
+			<!--<input type="text" class="form-control" placeholder="Category" ng-model="posting.category" />-->
+			<select class="form-control" ng-model="posting.category">
+				<option value="" disabled selected>Select category</option>
+				<option value="Textbook">Textbook</option>
+				<option value="Furniture">Furniture</option>
+				<option value="Enterprise">Enterprise</option>
+				<option value="Social">Social</option>
+				<option value="Other">Other</option>
+			</select>
+			
+			<input type="text" class="form-control" placeholder="Class Number" ng-model="posting.subcategory" ng-show="posting.category == 'Textbook'" />
+			<!--<input type="text" class="form-control" placeholder="Subcategory" ng-model="posting.subcategory" />-->
 			<textarea class="form-control" maxlength="200" rows="3" placeholder="Description" ng-model="posting.textbody"></textarea>
 			<button class="btn submit-btn pull-right" ng-click="submitPost()">Post</button>
 		</form>

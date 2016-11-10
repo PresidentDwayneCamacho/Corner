@@ -7,6 +7,7 @@
 var app = angular.module('postApp',['ngRoute','ngResource']);
 
 
+// attaches controllers to html
 app.config(function($routeProvider){
 	$routeProvider
 		.when('/', {
@@ -39,15 +40,16 @@ app.config(function($routeProvider){
 	});
 
 
+// method runs upon startup of angular
 app.run(function($http,$rootScope){
-
+	
+	// checks if a user is logged in, resets the profile name to $rootScope
 	if(sessionStorage.getItem('currentProfile') == null || sessionStorage.getItem('currentProfile') == 'Guest'){
 		sessionStorage.setItem('currentProfile','Guest');
 		$rootScope.authenticated = false;
 	} else {
 		$rootScope.authenticated = true;
 	}
-
 });
 
 
@@ -98,16 +100,11 @@ app.controller('profileController',function($scope,$http,$rootScope,$location){
 	} else {
 		$location.path('/');
 	}
-
 });
 
 
 // controls the posting hub
 app.controller('hubController',function($scope,$http,$rootScope,$location){
-
-	$scope.messageHeader = '';
-	$scope.messageRecipient = '';
-	$scope.messageBody = '';
 
 	// resets postings
 	var refresh = function(){
@@ -117,7 +114,6 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 		});
 	}
 	refresh();
-
 
 	if($rootScope.authenticated){
 
@@ -130,7 +126,7 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 		var updateInbox = function(){
 			var currentProfile = JSON.parse(sessionStorage.getItem('currentProfile'));
 			var email = currentProfile.email;
-			console.log('update inbox ' + email);
+			//console.log('update inbox ' + email);
 			$http.get('/inbox/'+email).success(function(res){
 				$scope.messages = res;
 			});
@@ -146,7 +142,6 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 					profile: res.recipient,
 					textbody: res.textbody
 				};
-				console.log('begin message ' + $rootScope.outline.recipient);
 				$location.path('/inbox');
 				updateInbox();
 			});
@@ -228,9 +223,7 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 	// unauthenticated, signs user out
 	$scope.signout = function(){
 		setProfile(false,'Guest');
-		//refresh();
 		$location.path('/');
 	}
-
 });
 

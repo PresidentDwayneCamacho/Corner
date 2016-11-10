@@ -64,7 +64,6 @@ router.post('/posting/:id',isAuthenticated,function(req,res,next){
 
 // delete post
 router.delete('/posting/:id',function(req,res){
-    //console.log('Deleted post back router ' + req.params.id);
     Posting.remove({_id: req.params.id},function(err,posts){
         if(err){ return res.send(500); }
         return res.send(posts);
