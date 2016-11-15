@@ -97,6 +97,11 @@ app.controller('profileController',function($scope,$http,$rootScope,$location){
 				refresh();
 			});
 		}
+
+		// resets the subcategory
+		$scope.resetSubcategory = function(){
+			$scope.posting.subcategory = '';
+		}
 	} else {
 		$location.path('/');
 	}
@@ -145,6 +150,20 @@ app.controller('hubController',function($scope,$http,$rootScope,$location){
 				$location.path('/inbox');
 				updateInbox();
 			});
+		}
+
+		$scope.respondMessage = function(message){
+			var currentInfo = {
+				header: message.header,
+				createdBy:{
+					email: message.sender.email,
+					first: message.sender.first,
+					last: message.sender.last
+				},
+				textbody: ''
+			};
+			$scope.beginMessage(currentInfo);
+			window.scrollTo(0,0);
 		}
 
 		// send message to user, logging it in database
@@ -226,4 +245,35 @@ app.controller('authController',function($scope,$http,$rootScope,$location){
 		$location.path('/');
 	}
 });
+
+
+/*
+var PostingSchema = mongoose.Schema({
+    header: {type: String, required: true},
+    category: {type: String, required: true},
+    subcategories: [{type: String}],
+    textbody: {type: String, required: true},
+    createdBy: {
+        email: {type: String, required: true},
+        first: {type: String, required: true},
+        last: {type: String, required: true}
+    },
+    createdAt: {type: Date, default: Date.now}
+});
+var MessageSchema = mongoose.Schema({
+    header: {type: String},
+    sender: {
+        email: {type: String, required: true},
+        first: {type: String, required: true},
+        last: {type: String, required: true}
+    },
+    recipient: {
+        email: {type: String, required: true},
+        first: {type: String, required: true},
+        last: {type: String, required: true}
+    },
+    textbody: {type: String, required: true},
+    createdAt: {type: Date, default: Date.now}
+});
+*/
 
