@@ -1,0 +1,42 @@
+<!--index.html-->
+<!-- main header bar of application -->
+<!-- other pages are nested in ng-view -->
+<!-- angular functions begin with ng- (ex ng-model) -->
+<html>
+  <head>
+    <title>Corner</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.5.8/angular-route.js"></script>
+    <script src="https://code.angularjs.org/1.5.8/angular-resource.js"></script>
+    <script src="controllers/controller.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    
+  </head>
+  <body ng-app="postApp">
+    <div id='main' class="container">
+      <nav class="navbar-fluid navbar-default navbar-fixed-top">
+
+        <div ng-controller="authController" class="container">
+          <a class="navbar-brand" href="#/"> Bronco Corner </a>
+          <p class="navbar-right navbar-text" ng-hide="authenticated">
+            <input ng-model="profile.email" type="text" placeholder="Email">
+            <input ng-model="profile.password" type="password" placeholder="Password">
+            <button ng-click="login()">Login</button>
+            or <a href="#/register">Register</a>
+          </p>
+          <p class="navbar-right navbar-text" ng-show="authenticated">
+            <a href="#/profile">Profile</a>
+            <a href="#/posthub">Post Hub</a>
+            <a href="#/inbox">Inbox</a>
+            <a href="#/" ng-click="signout()">Log out</a>
+          </p>
+        </div>
+
+      </nav>
+      <div class="col-md-offset-2 col-md-8">
+        <div ng-view>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
