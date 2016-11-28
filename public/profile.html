@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="style/vendor/device-mockups/device-mockups.min.css">
 
     <!-- Theme CSS -->
-    <link href="style/css/new-age.css" rel="stylesheet">
+    <link href="style/css/new-age-light.css" rel="stylesheet">
 </head>
 
 
@@ -96,7 +96,7 @@
 		</form>
 
 		<div id="post-stream">
-			<h4>Your Posts</h4>
+			<h4><b style="color:#FCC448">Your Posts</b></h4>
 			<div class="post" ng-repeat="post in postings | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'">
 				<div>&nbsp;</div><div>&nbsp;</div>
 				<p>{{post.header}}</p>
