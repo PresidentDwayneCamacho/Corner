@@ -18,6 +18,7 @@
 
     <!-- Theme CSS -->
     <link href="style/css/new-age-light.css" rel="stylesheet">
+	<link rel="stylesheet" href="stylesheets/style.css">
 </head>
 
 
@@ -92,20 +93,20 @@
 			</select>
 
 			<textarea class="form-control" maxlength="200" rows="3" placeholder="Description" ng-model="posting.textbody"></textarea>
-			<button class="btn submit-btn pull-right" ng-click="submitPost()">Post</button>
+			<button class="btn submit-btn pull-right" ng-click="submitPost()">Post</button><div>&nbsp;</div><div>&nbsp;</div>
 		</form>
 
 		<div id="post-stream">
 			<h4><b style="color:#FCC448">Your Posts</b></h4>
 			<div class="post" ng-repeat="post in postings | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'">
-				<div>&nbsp;</div><div>&nbsp;</div>
+
 				<div><p>{{post.header}}</p></div>
 				<div><h4>{{post.category}}</h4></div>
 				<div><small>{{post.subcategory}}</small></div>
 				<div><small>{{post.textbody}}</small></div>
-				<button class="btn submit-btn pull-right" ng-click="deletePost(post._id)">Delete</button>
+				<button class="btn pull-right" ng-click="deletePost(post._id)">Delete</button>
 				<small class="pull-left">{{post.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
-				<div>&nbsp;</div>
+				<div>&nbsp;</div><div>&nbsp;</div>
 			</div>
 		</div>	
 	</div>

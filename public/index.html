@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
     <link rel="shortcut icon" type="image/x-icon" href="style/img/favicon.ico" />
-    
+    	<link rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body ng-app="postApp">
     <div id='main' class="container">
@@ -25,7 +25,7 @@
           <p class="navbar-right navbar-text" ng-hide="authenticated">
             <input ng-model="profile.email" type="text" placeholder="Email">
             <input ng-model="profile.password" type="password" placeholder="Password">
-            <button ng-click="login()">Login</button>
+            <input type="submit" value="Log in" class="btn" ng-click="login()"/>
             or <a href="#/register" style="font-weight:bold;color:#008152">Register</a>
           </p>
           <p class="navbar-right navbar-text" ng-show="authenticated">

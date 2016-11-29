@@ -17,6 +17,7 @@
 
     <!-- Theme CSS -->
     <link href="style/css/new-age-light.css" rel="stylesheet">
+	<link rel="stylesheet" href="stylesheets/style.css">
 </head>
 
 
@@ -34,9 +35,9 @@
 				<input type="text" class="form-control" ng-model="outline.recipient" placeholder="Recipient" />
 				<textarea class="form-control" maxlength="200" rows="3" ng-model="outline.textbody" placeholder="Message"></textarea>
 				<button class="btn submit-btn pull-right" ng-click="sendMessage()">Send</button>
+				<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
 			</form>
 			<div class="post" ng-repeat="message in messages | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'"> 
-				<div>&nbsp;</div><div>&nbsp;</div>
 				<!-- color message depending on whether it is sent or recieved? -->
 				<div><p>{{message.header}}</p></div>
 				<div><small>{{message.sender.first}} {{message.sender.last}}</small></div>
@@ -45,7 +46,7 @@
 					message {{message.sender.first}} {{message.sender.last}}
 				</button>
 				<small class="pull-left">{{message.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
-				<div>&nbsp;</div>
+				<div>&nbsp;</div><div>&nbsp;</div>
 			</div>
 		</div>
 	</div>
