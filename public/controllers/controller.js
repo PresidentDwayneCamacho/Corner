@@ -75,6 +75,7 @@ app.controller('profileController',function($scope,$http,$rootScope,$location){
 			$http.get('/profile/'+profileObj.email).success(function(res){
 				$scope.postings = res;
 				$scope.posting = '';
+				$scope.user = profileObj;
 			});
 		}
 		refresh();

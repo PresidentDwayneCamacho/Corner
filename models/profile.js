@@ -11,6 +11,9 @@ var profileSchema = mongoose.Schema({
     last: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
+    major: {type: String, required: true},
+    interests: {type: String, required: true},
+    dating: {type: String, required: true},
     createdAt: {type: Date, default: Date.now}
 });
 

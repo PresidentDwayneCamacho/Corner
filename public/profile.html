@@ -29,6 +29,13 @@
 
 		<form>
 			<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+				<div><h2><b style="color:#FCC448">{{user.first}} {{user.last}}</h2></b></div>
+				<div class="post" ng-class-odd="'odd'" ng-class-even="'even'">
+					<div>Major: {{user.major}}</div>
+					<div>Interests: {{user.interests}}</div>
+					<div>Dating status: {{user.dating}}</div>
+				</div>
+				
 			<input type="text" class="form-control" placeholder="Header" ng-model="posting.header" />
 			
 			<select class="form-control" ng-model="posting.category" ng-click="resetSubcategory()">

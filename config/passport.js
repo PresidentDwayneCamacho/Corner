@@ -65,6 +65,9 @@ module.exports = function(passport) {
                         var newProfile = new Profile();
                         newProfile.first = req.body.first;
                         newProfile.last = req.body.last;
+                        newProfile.major = req.body.major;
+                        newProfile.interests = req.body.interests;
+                        newProfile.dating = req.body.dating;
                         newProfile.email = email;
                         newProfile.password = newProfile.generateHash(password);
                         newProfile.save(function(err) {
