@@ -32,19 +32,15 @@
             <p>Search:&nbsp;<input type="text" ng-model="search"></p>
 			<div class="post" ng-repeat="posting in postings | orderBy: '-_id' | filter:search" ng-class-odd="'odd'" ng-class-even="'even'"> 
 				<div>&nbsp;</div><div>&nbsp;</div>
-				<p>{{posting.header}}</p>
-				<span>{{posting.category}}</span>
-				<span>{{posting.textbody}}</span>
-
-				<button class="btn btn-submit" ng-click="beginMessage(posting)">
+				<div><p>{{posting.header}}</p><div>
+				<div><h4>{{posting.category}}</h4><div>
+				<div><span>{{posting.textbody}}</span><div>
+				<button class="btn btn-submit pull-right" ng-click="beginMessage(posting)">
 					message {{posting.createdBy.first}} {{posting.createdBy.last}}
 				</button>
-
-				<!--<a ng-click="writeMessage(posting)" href="#/inbox" >
-					message {{posting.createdBy.first}} {{posting.createdBy.last}}
-				</a>-->
-
-				<span class="pull-right">{{posting.createdAt | date:"h:mma 'on' MMM d, y"}}</span>
+				
+				<span class="pull-left">{{posting.createdAt | date:"h:mma 'on' MMM d, y"}}</span>
+				<div>&nbsp;</div>
 			</div>
 		</div>
 	</div>

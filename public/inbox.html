@@ -38,13 +38,14 @@
 			<div class="post" ng-repeat="message in messages | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'"> 
 				<div>&nbsp;</div><div>&nbsp;</div>
 				<!-- color message depending on whether it is sent or recieved? -->
-				<p>{{message.header}}</p>
-				<small>{{message.textbody}}</small>
-				<small>{{message.sender.first}} {{message.sender.last}}</small>
-				<button class="btn btn-submit" ng-click="respondMessage(message)">
+				<div><p>{{message.header}}</p></div>
+				<div><small>{{message.sender.first}} {{message.sender.last}}</small></div>
+				<div><h4>{{message.textbody}}</h4></div>
+				<button class="btn btn-submit pull-right" ng-click="respondMessage(message)">
 					message {{message.sender.first}} {{message.sender.last}}
 				</button>
-				<small class="pull-right">{{message.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
+				<small class="pull-left">{{message.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
+				<div>&nbsp;</div>
 			</div>
 		</div>
 	</div>

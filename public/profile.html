@@ -99,20 +99,15 @@
 			<h4><b style="color:#FCC448">Your Posts</b></h4>
 			<div class="post" ng-repeat="post in postings | orderBy: '-_id'" ng-class-odd="'odd'" ng-class-even="'even'">
 				<div>&nbsp;</div><div>&nbsp;</div>
-				<p>{{post.header}}</p>
-				<small>{{post.category}}</small>
-				<small>{{post.subcategory}}</small>
-				<small>{{post.textbody}}</small>
-				<!-- Potential solution for image interface?
-				<div ng-repeat="image in postings.images">
-					<img src="{{image}}"/>
-				</div>
-				-->
-				<small class="pull-right">{{post.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
-				<button class="btn submit-btn" ng-click="deletePost(post._id)">Delete</button>
+				<div><p>{{post.header}}</p></div>
+				<div><h4>{{post.category}}</h4></div>
+				<div><small>{{post.subcategory}}</small></div>
+				<div><small>{{post.textbody}}</small></div>
+				<button class="btn submit-btn pull-right" ng-click="deletePost(post._id)">Delete</button>
+				<small class="pull-left">{{post.createdAt | date:"h:mma 'on' MMM d, y"}}</small>
+				<div>&nbsp;</div>
 			</div>
-		</div>
-
-	
+		</div>	
 	</div>
+	<div>&nbsp;</div><div>&nbsp;</div>
 </div>
